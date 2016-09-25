@@ -3,3 +3,5 @@ www/build/
 platforms/
 plugins/
 .DS_Store
+*.keystore
+*.apk
