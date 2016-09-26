@@ -11,6 +11,7 @@ Signal K Mobile requires a Signal K compatible server on the local network. Main
 * Displays AIS vessels on Google Maps (requires Internet connectivity for the base map).
 * Displays depth, speed, course, wind speed and direction (both apparent and true).
 * Re-connects automatically if the server connection goes down and visually indicates if the connection is up or down.
+* IMPORTANT NOTE: This is not a navigation app and should not be used for such purpose.
 
 
 Installation
