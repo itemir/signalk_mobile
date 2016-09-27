@@ -6,7 +6,8 @@ Signal K Mobile is a reference mobile app implementation written in Ionic2 for [
 
 Signal K Mobile requires a Signal K compatible server on the local network. Main features are:
 
-* Support both iOS and Android. Can be ported to other platforms Ionic supports (possibly without Bonjour/mDNS support) fairly easily.
+* Supports both iOS and Android. Can be ported to other platforms Ionic supports (possibly without Bonjour/mDNS support) fairly easily.
+* Available on [Apple App Store](https://itunes.apple.com/us/app/signal-k/id1158614687?ls=1&mt=8) and [Gooogle Play](https://play.google.com/store/apps/details?id=mobi.signalk.app&hl=en).
 * Detects Signal K server on the network using Bonjour/mDNS. If the server does not advertise itself, an address can be provided manually.
 * Displays AIS vessels on Google Maps (requires Internet connectivity for the base map).
 * Displays depth, speed, course, wind speed and direction (both apparent and true).
