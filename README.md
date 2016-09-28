@@ -32,6 +32,10 @@ When Ionic and Cordova are properly installed:
     $ npm install
     $ ionic state restore
 
+You can now launch it in development mode on your web browser (Bonjour/mDNS detection will not work in browser mode, you need to provide the server manually).
+
+    $ ionic serve
+
 Assuming Cordova, XCode and/or Android SDK is properly installed, you can run the Signal K Mobile on an emulator or on your device:
 
     $ ionic emulate ios
