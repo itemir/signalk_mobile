@@ -1,0 +1,36 @@
+<ion-header>
+  <ion-navbar primary>
+    <ion-title>Sensors</ion-title>
+    <ion-buttons end>
+      <button (click)='signalK.obtainServerAddrManually()'>
+        <ion-icon *ngIf='signalK.connected' style='color: green;' name='wifi'></ion-icon>
+        <ion-icon *ngIf='!signalK.connected' style='color: red;' name='wifi'></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <table class='fullWidth'>
+    <tr>
+      <td colspan='2' class='fullWidth center padding-top'>
+        <canvas [hidden]="unit!='celsius'" #temperatureC id="temperatureC" width="100" height="100"></canvas>
+        <canvas [hidden]="unit!='fahrenheit'" #temperatureF id="temperatureF" width="100" height="100"></canvas>
+        <div style='width: 100px; margin: 0 auto;'>
+        <ion-segment [(ngModel)]="unit" (ionChange)="saveUnit()" medium>
+          <ion-segment-button value="fahrenheit">
+           °F
+          </ion-segment-button>
+          <ion-segment-button value="celsius">
+           °C 
+          </ion-segment-button>
+        </ion-segment>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td class='halfWidth center padding-top'><canvas #pressure id="pressure" width="100" height="100"></canvas></td>
+      <td class='halfWidth center padding-top'><canvas #humidity id="humidity" width="100" height="100"></canvas></td>
+    </tr>
+  </table>
+</ion-content>

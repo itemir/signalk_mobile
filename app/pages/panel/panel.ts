@@ -50,10 +50,8 @@ export class PanelPage {
       to make sure it is properly initialized before setting up
       gauges and starting Signal K.
       */
-      setTimeout( () => {
-        this.setUpGauges();
-        signalK.start();
-      }, 500);
+      setTimeout( () => this.setUpGauges(), 500);
+      setTimeout( () => signalK.start(), 250);
     });
   }
 

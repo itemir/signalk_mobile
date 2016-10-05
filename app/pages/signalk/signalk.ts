@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
-import {LoadingController, AlertController, Events} from 'ionic-angular';
+import {NavController, LoadingController, AlertController, Events} from 'ionic-angular';
 import {$WebSocket} from 'angular2-websocket/angular2-websocket';
+import {ServerFormPage} from '../serverform/serverform';
 
 declare var cordova;
 
@@ -14,14 +15,20 @@ export class SignalK {
   constructor(
     public events: Events,
     public alertCtrl: AlertController,
-    public loadingCtrl: LoadingController
-  ){}
+    public loadingCtrl: LoadingController,
+    public navCtrl: NavController
+  ){
+    this.events.subscribe('signalk:connect', (eventData) => {
+      this.setServerAddress(eventData[0], eventData[1]);
+    });
+  }
 
   start(successCallback: Function=null) {
     let loading = this.loadingCtrl.create({
       content: 'Looking for a Signal K Server'
     });
     loading.present().then( () => {
+      // Others can signal us to change the server we are using
       /*
       We will look for a Signal K Server mDNS advertisement for 4 
       seconds, then ask the user to enter server address manually.
@@ -31,65 +38,59 @@ export class SignalK {
       let timeout = setTimeout( () => {
         loading.dismiss().then( () => {
           cordova.plugins.zeroconf.unwatch("_signalk-ws._tcp.local.");
-          this.obtainServerAddrManually(false, successCallback);
+          window.localStorage.removeItem('signalkServer');
+          window.localStorage.removeItem('signalkServerPath');
+          this.obtainServerAddrManually();
         });
       }, 4000);
 
       cordova.plugins.zeroconf.watch("_signalk-ws._tcp.local.", (result) => {
         loading.dismiss().then( () => {
-          clearTimeout(timeout);   // Cancel timeout
-          let addresses = result.service.addresses;
-          let wsServer = addresses[0];
-          let wsPort = result.service.port;
-          let wsServerPath = 'ws://' + wsServer + ':' + wsPort +
-                              '/signalk/v1/stream?subscribe=all&stream=delta';
-          setTimeout ( () => this.startWebsocketConnection(wsServerPath), 500);
-          cordova.plugins.zeroconf.unwatch("_signalk-ws._tcp.local.");
-          if (successCallback)
-            successCallback();
+          for (let i=0;i<result.service.addresses.length;i++) {
+            // Skip IPv6 addresses
+            let wsServer = result.service.addresses[i];
+            if (wsServer.indexOf(':') != -1)
+              continue;
+            clearTimeout(timeout);   // Cancel timeout
+            let addresses = result.service.addresses;
+            let wsPort = result.service.port;
+            window.localStorage.setItem('signalkServer', wsServer + ':' + wsPort);
+            let signalKServerPath = '/signalk/v1/stream';
+            window.localStorage.setItem('signalkServerPath', signalKServerPath);
+            let wsServerPath = 'ws://' + wsServer + ':' + wsPort +
+                                signalKServerPath + '?subscribe=all&stream=delta';
+            setTimeout ( () => this.startWebsocketConnection(wsServerPath), 1000);
+            cordova.plugins.zeroconf.unwatch("_signalk-ws._tcp.local.");
+            if (successCallback)
+              successCallback();
+            break;
+          }
         });
       });
     });
   }
 
-  obtainServerAddrManually(cancelEnabled=false, successCallback: Function=null) {
-    let buttons = [
-      {
-        text: 'OK',
-        handler: data => {
-          if (data.server != '') {
-            // Close WebSocket if it is open
-            if (this.ws != null) {
-              this.ws.close(true);
-              this.ws = null;
-            }
-            let wsServerPath = 'ws://' + data.server +
-                               '/signalk/v1/stream?subscribe=all&stream=delta';
-            this.startWebsocketConnection(wsServerPath);
-            if (successCallback)
-              successCallback();
-          }
-        }
-      }
-    ]
-    if (cancelEnabled) {
-      buttons.splice(0, 0, { 
-        text: 'Cancel',
-        handler: data => {} 
-      });
+  obtainServerAddrManually() {
+    this.navCtrl.push(ServerFormPage);
+  }
+
+  setServerAddress(address: string, path, callback: Function = null) {
+    /*
+    Sets a new server address (e.g. 192.168.1.2:3000)
+    */
+    if (this.ws != null) {
+      this.ws.close(true);
+      this.ws = null;
     }
-    let prompt = this.alertCtrl.create({
-      title: 'Signal K Server',
-      message: "Please enter Signal K Server address",
-      inputs: [
-        {
-          name: 'server',
-          placeholder: '(e.g. 192.168.1.2:3000)'
-        },
-      ],
-      buttons: buttons,
-    });
-    prompt.present();
+    window.localStorage.setItem('signalkServer', address);
+    window.localStorage.setItem('signalkServerPath', path);
+    let wsServerPath = 'ws://' + address + path +
+                       '?subscribe=all&stream=delta';
+    setTimeout( () => {
+      this.startWebsocketConnection(wsServerPath);
+      if (callback)
+        callback();
+    }, 500);
   }
 
   startWebsocketConnection(wsServerPath) {

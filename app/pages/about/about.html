@@ -2,7 +2,7 @@
   <ion-navbar primary>
     <ion-title>About</ion-title>
     <ion-buttons end>
-      <button (click)='signalK.obtainServerAddrManually(true)'>
+      <button (click)='signalK.obtainServerAddrManually()'>
         <ion-icon *ngIf='signalK.connected' style='color: green;' name='wifi'></ion-icon>
         <ion-icon *ngIf='!signalK.connected' style='color: red;' name='wifi'></ion-icon>
       </button>
@@ -16,8 +16,9 @@
     <strong>Signal K Mobile</strong>
   </ion-card-header>
   <ion-card-content>
-    <div class='paragraph'>Signal K Mobile is an open source mobile application for leveraging and promoting <a href='http://signalk.org/'>Signal K</a>, a modern and open data format for marine use. </div>
-    <div class='paragraph'>It has been developed to promote usage of Signal K and is <strong>NOT RECOMMENDED</strong> for navigation.</div>
+    <div class='paragraph'>Signal K Mobile is an open source mobile application developed by Ilker Temir for leveraging and promoting <a href='http://signalk.org/'>Signal K</a>, a modern and open data format for marine use. </div>
+    <div class='paragraph'>It has been developed to promote the usage of Signal K and is <strong>NOT RECOMMENDED</strong> for navigation.</div>
+    <div>If you do not have any Signal K sensors, check <a href='https://github.com/itemir/boatsensord'>BoatSensord</a> project on GitHub for a list of Signal K capable DIY sensors.</div>
     <div class='paragraph'>Source code is available at <a href='https://github.com/itemir/signalk-mobile'>GitHub</a> under Apache License version 2.</div>
     <div class='paragraph'>Signal K Mobile is not affiliated with, nor is endorsed by the Signal K working group.</div>
   </ion-card-content>

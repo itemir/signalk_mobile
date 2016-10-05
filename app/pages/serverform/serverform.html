@@ -1,0 +1,23 @@
+<ion-header>
+  <ion-navbar primary>
+    <ion-title>
+      Signal K Server
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <form [formGroup]="authForm">
+    <ion-item>
+      <ion-input type="text" [formControl]="serverAddress" placeholder="Server address (e.g. 192.168.1.2:3000)"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input type="text" [formControl]="serverPath" placeholder="Server path (e.g. /signalk/ws)"></ion-input>
+    </ion-item>
+    <div *ngIf="serverAddress.hasError('required') && serverAddress.touched" style='color: red; padding-left: 15px;'>Server address is required</div>
+    <div style='padding-top: 25px;'>
+      <button (click)="onSubmit(authForm.value)" [disabled]="!authForm.valid" block primary>Save</button><br/>
+    </div>
+  </form>
+</ion-content>
+
