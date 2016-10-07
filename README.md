@@ -11,6 +11,7 @@ Signal K Mobile requires a Signal K compatible server on the local network. Main
 * Detects Signal K server on the network using Bonjour/mDNS. If the server does not advertise itself, an address can be provided manually.
 * Displays AIS vessels on Google Maps (requires Internet connectivity for the base map).
 * Displays depth, speed, course, wind speed and direction (both apparent and true).
+* Displays temperature, humidity and pressure readings when they are available (Check [this tutorial](https://www.partmarine.com/blog/nine_dollar_weather_station_for_raspberry_pi/) to make your own DIY sensors on a Raspberry Pi).
 * Re-connects automatically if the server connection goes down and visually indicates if the connection is up or down.
 * IMPORTANT NOTE: This is not a navigation app and should not be used for such purpose.
 
