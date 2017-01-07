@@ -149,16 +149,16 @@ export class PanelPage {
                 this.wind.setValue(value);
                 break;
               case 'environment.wind.speedApparent':
-                this.windSpeed.setValue(value);
+                this.windSpeed.setValue(value * 1.94384);
                 break;
               case 'environment.wind.speedTrue':
-                this.windSpeed.setAltValue(value);
+                this.windSpeed.setAltValue(value * 1.94384);
                 break;
               case 'navigation.courseOverGroundMagnetic':
                 this.compass.setValue(value * 180 / Math.PI);
                 break;
               case 'navigation.speedOverGround':
-                this.speed.setValue(value);
+                this.speed.setValue(value * 1.94384);
                 break;
             }
           }
