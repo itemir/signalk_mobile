@@ -125,7 +125,7 @@ export class PanelPage {
 
   handleSignalKMessage(jsonData) {
     let data = JSON.parse(jsonData);
-    if (('name' in data) && (data.name == 'signalk-server'))
+    if ('name' in data)
       this.signalK.selfId = data.self
     else if ('context' in data) {
       let vesselId = data.context.replace('vessels.','');
